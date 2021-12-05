@@ -1,31 +1,34 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp_ims/demandScreen.dart';
-import 'package:fyp_ims/homeScreen.dart';
-import 'package:fyp_ims/replacementScreen.dart';
-import 'package:fyp_ims/salesScreen.dart';
+import 'package:fyp_ims/views/manager/attendanceScreen.dart';
+import 'package:fyp_ims/views/manager/requestsScreen.dart';
+import 'package:fyp_ims/views/manager/salesScreen.dart';
+import 'package:fyp_ims/views/manager/stockScreen.dart';
 
-class SalesmanHomePage extends StatefulWidget {
-  const SalesmanHomePage({Key? key}) : super(key: key);
+class ManagerHomePage extends StatefulWidget {
+  const ManagerHomePage({Key? key}) : super(key: key);
 
   @override
-  _SalesmanHomePageState createState() => _SalesmanHomePageState();
+  _ManagerHomePageState createState() => _ManagerHomePageState();
 }
 
-class _SalesmanHomePageState extends State<SalesmanHomePage> {
+class _ManagerHomePageState extends State<ManagerHomePage> {
 
   int cIndex=0;
   final screens=[
-    HomeScreen(),
+    StockScreen(),
     SalesScreen(),
-    DemandScreen(),
-    ReplacementScreen(),
+    RequestScreen(),
+    AttendanceScreen(),
   ];
 
-
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Manager Interface"),
+        centerTitle: true,
+      ),
       bottomNavigationBar: Container(
         height: 100.0,
         clipBehavior: Clip.hardEdge,
@@ -35,9 +38,9 @@ class _SalesmanHomePageState extends State<SalesmanHomePage> {
         ),
         child: BottomNavigationBar(
           onTap: (index) {
-              setState(() {
-                cIndex = index;
-              });
+            setState(() {
+              cIndex = index;
+            });
           },
           type: BottomNavigationBarType.shifting,
           backgroundColor: Colors.indigo.shade900,
@@ -54,42 +57,37 @@ class _SalesmanHomePageState extends State<SalesmanHomePage> {
           selectedFontSize: 18.0,
           items: [
             BottomNavigationBarItem(
-              icon: Icon(
-                CupertinoIcons.home,
-              ),
-              label: "Home",
-              backgroundColor: Colors.indigo.shade900
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.add_shopping_cart,
-              ),
-              label: "sales",
+                icon: Icon(
+                  Icons.storefront,
+                ),
+                label: "Stock",
                 backgroundColor: Colors.indigo.shade900
             ),
             BottomNavigationBarItem(
-              icon: Icon(
-                CupertinoIcons.tags,
-              ),
-              label: "Demand",
+                icon: Icon(
+                  Icons.add_shopping_cart,
+                ),
+                label: "Sales",
                 backgroundColor: Colors.indigo.shade900
             ),
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.find_replace,
-              ),
-              label: "Replacement",
+                icon: Icon(
+                  Icons.find_replace,
+                ),
+                label: "Requests",
+                backgroundColor: Colors.indigo.shade900
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  CupertinoIcons.location_solid,
+                ),
+                label: "Attendance",
                 backgroundColor: Colors.indigo.shade900
             )
           ],
         ),
       ),
-      appBar: AppBar(
-        title: Text("SalesMan Interface"),
-        centerTitle: true,
-      ),
-      body: screens[cIndex]
+      body: screens[cIndex],
     );
   }
-
 }

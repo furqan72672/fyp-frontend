@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:fyp_ims/geoFunctions.dart';
-import 'package:fyp_ims/timeFormatter.dart';
+import 'package:fyp_ims/utils/geoFunctions.dart';
+import 'package:fyp_ims/utils/timeFormatter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Text(formattedDate,
                         style: TextStyle(
                             fontSize: 15,
-                            fontWeight: FontWeight.bold
+                            fontWeight: FontWeight.bold,
                         ),),
                        Text( TimeFormatter().formatTime(),
                         style: TextStyle(
@@ -146,10 +146,10 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(50.0),
                 child: Container(
-                  height: 60.0,
+                  height: 50.0,
                   width: double.infinity,
                   child: ElevatedButton(
-                    child: Text("Mark Attendance"),
+                    child: Text("Mark Attendance",style: TextStyle(fontWeight: FontWeight.bold)),
                     onPressed: () async {
                       try {
                         pos=await GeoFunctions().determinePosition();
@@ -168,8 +168,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
                       //handle this
                       List<Placemark> placemark = await placemarkFromCoordinates(pos!.latitude, pos!.longitude);
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Your placemark is "+(placemark[0].name as String)),duration: Duration(seconds: 2),));
-                      print(placemark);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Your placemark is "+(placemark[0].name as String)+", "+(placemark[0].street as String)+", "+(placemark[0].subLocality as String)+", "+(placemark[0].locality as String)+", "+(placemark[0].administrativeArea as String)+", "+(placemark[0].country as String)),duration: Duration(seconds: 2),));
+                      // print(placemark);
 
                     },
                   ),

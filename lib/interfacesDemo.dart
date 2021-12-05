@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fyp_ims/adminHomePage.dart';
-import 'package:fyp_ims/managerHomePage.dart';
-import 'package:fyp_ims/salesmanHomePage.dart';
+import 'package:fyp_ims/views/admin/adminHomePage.dart';
+import 'package:fyp_ims/views/manager/managerHomePage.dart';
+import 'package:fyp_ims/views/salesman/salesmanHomePage.dart';
 
 class InterfacesDemo extends StatelessWidget {
   const InterfacesDemo({Key? key}) : super(key: key);

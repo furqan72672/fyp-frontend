@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fyp_ims/landing_page.dart';
+import 'package:fyp_ims/views/auth/landing_page.dart';
 
 void main() {
   runApp(MaterialApp(

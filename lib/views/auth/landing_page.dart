@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fyp_ims/forgottenPasswordEmail.dart';
+import 'package:fyp_ims/views/auth/forgottenPasswordEmail.dart';
 import 'package:fyp_ims/interfacesDemo.dart';
-import 'package:fyp_ims/signUpPage.dart';
+import 'package:fyp_ims/views/auth/signUpPage.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
