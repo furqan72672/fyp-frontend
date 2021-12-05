@@ -40,19 +40,27 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   @override
   Widget build(BuildContext context) {
     return Material(
-        child:Padding(
-          padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 10.0),
-          child: ListView.separated(
-              itemCount: 30,
-              separatorBuilder: (context,index)=>Divider(height: 15.0,thickness: 2.0,),
-              itemBuilder: (context,index){
-                return ListTile(
-                  leading: Text("Time"),
-                  title: Center(child: Text("Salesman Name")),
-                  subtitle: Center(child: Text("Branch")),
-                  trailing: Text("Present"),
-                );
-              }),
+        child:  Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              Text("Attendance Report",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
+              SizedBox(height: 50.0,),
+              Expanded(
+                child: ListView.separated(
+                    itemCount: 30,
+                    separatorBuilder: (context,index)=>Divider(height: 15.0,thickness: 2.0,),
+                    itemBuilder: (context,index){
+                      return ListTile(
+                        leading: Text("Time"),
+                        title: Center(child: Text("Salesman Name")),
+                        subtitle: Center(child: Text("Branch")),
+                        trailing: Text("Present"),
+                      );
+                    }),
+              ),
+            ],
+          ),
         )
         // Padding(
         //   padding: const EdgeInsets.all(20.0),
