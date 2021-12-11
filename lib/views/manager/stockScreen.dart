@@ -87,13 +87,24 @@ class _StockScreenState extends State<StockScreen> {
                         ),
                       ),
                       onDismissed: (direction) {
-                        if(direction==DismissDirection.endToStart){
-                          //Delete
-
-                        }
-                        else{
-                          //update
-                        }
+                        showDialog(context: context, builder: (ctx){
+                          return AlertDialog(
+                            title: Text("Update Stock"),
+                            content: Column(
+                              children: [
+                                TextField(),
+                                TextField(),
+                                TextField(),
+                              ],
+                            ),
+                          );
+                        });
+                        // if(direction==DismissDirection.endToStart){
+                        //
+                        // }
+                        // else{
+                        //   //update
+                        // }
                       },
                       child: ListTile(
                         leading: Text("Branch"),
