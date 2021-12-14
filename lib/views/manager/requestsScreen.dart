@@ -9,6 +9,12 @@ class RequestScreen extends StatefulWidget {
 
 class _RequestScreenState extends State<RequestScreen> {
 
+  TextEditingController branch =new TextEditingController();
+  TextEditingController productName =new TextEditingController();
+  TextEditingController stock =new TextEditingController();
+  // loadData(){
+  //   return ;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -26,24 +32,9 @@ class _RequestScreenState extends State<RequestScreen> {
                         separatorBuilder: (context,index)=>Divider(height: 15.0,thickness: 2.0,),
                         itemBuilder: (context,index){
                       return Dismissible(
+                        direction: DismissDirection.endToStart,
                           key: UniqueKey(),
                           background: Container(
-                            alignment: AlignmentDirectional.centerStart,
-                            decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(10.0)),
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(15.0, 0, 0, 0),
-                              child: Text(
-                                "Update",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 17.0,
-                                  // fontWeight: FontWeight.bold),
-                                ),),
-                            ),
-                          ),
-                          secondaryBackground: Container(
                             alignment: AlignmentDirectional.centerEnd,
                             decoration: BoxDecoration(
                                 color: Colors.red,
@@ -60,12 +51,25 @@ class _RequestScreenState extends State<RequestScreen> {
                             ),
                           ),
                           onDismissed: (direction) {
-                            if(direction==DismissDirection.endToStart){
-                              //Delete
-                            }
-                            else{
-                              //update
-                            }
+                            branch.text="Branch here";
+                            productName.text="Product Name Here";
+                            stock.text="2";
+                            showDialog(barrierDismissible: false,context: context, builder: (ctx){
+                              return AlertDialog(
+                                title: Center(child: Text("Delete Request", style: TextStyle(fontWeight: FontWeight.bold),)),
+                                content:
+                                    Text("Are you sure you want to delete the selected request? The action may be irreversible.",textAlign: TextAlign.center,),
+                                actions: [
+                                  ElevatedButton(onPressed: (){
+                                    Navigator.of(context).pop();
+                                    setState(() {});
+                                  }, child: Text("Cancel")),
+                                  ElevatedButton(onPressed: (){
+                                    //api call
+                                  }, child: Text("Delete"))
+                                ],
+                              );
+                            });
                           },
                           child: ListTile(
                             leading: Text("Date"),

@@ -8,30 +8,16 @@ class StockScreen extends StatefulWidget {
 }
 
 class _StockScreenState extends State<StockScreen> {
-  // List<TableRow> data=[];
-  // createRows(){
-  //   data.add(TableRow(
-  //       decoration: BoxDecoration(color: Colors.grey.shade200),
-  //       children: [
-  //         Center(child: Text("Product")),
-  //         Center(child: Text("Stock")),
-  //         Center(child: Text("Branch")),
-  //       ]
-  //   ));
-  //   for(var i=1;i<=10;i++){
-  //     data.add(TableRow(
-  //         children: [
-  //           Center(child: Text("Random Product")),
-  //           Center(child: Text("1")),
-  //           Center(child: Text("Random Store")),
-  //         ]
-  //     ));
-  //   }
+
+  TextEditingController branch =new TextEditingController();
+  TextEditingController productName =new TextEditingController();
+  TextEditingController stock =new TextEditingController();
+  // loadData(){
+  //   return ;
   // }
+
   @override
   void initState() {
-    // TODO: implement initState
-    // createRows();
     super.initState();
   }
 
@@ -53,6 +39,7 @@ class _StockScreenState extends State<StockScreen> {
                       ),
                 itemBuilder: (context, index) {
                   return Dismissible(
+                      direction: DismissDirection.startToEnd,
                       key: UniqueKey(),
                       background: Container(
                         alignment: AlignmentDirectional.centerStart,
@@ -70,41 +57,32 @@ class _StockScreenState extends State<StockScreen> {
                           ),),
                         ),
                       ),
-                      secondaryBackground: Container(
-                        alignment: AlignmentDirectional.centerEnd,
-                        decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(10.0)),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0.0, 0, 15.0, 0),
-                          child: Text(
-                            "Delete",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 17.0,
-                              // fontWeight: FontWeight.bold),
-                            ),),
-                        ),
-                      ),
                       onDismissed: (direction) {
-                        showDialog(context: context, builder: (ctx){
-                          return AlertDialog(
-                            title: Text("Update Stock"),
-                            content: Column(
-                              children: [
-                                TextField(),
-                                TextField(),
-                                TextField(),
+                          branch.text="Branch here";
+                          productName.text="Product Name Here";
+                          stock.text="2";
+                          showDialog(barrierDismissible: false,context: context, builder: (ctx){
+                            return AlertDialog(
+                              title: Center(child: Text("Update Stock", style: TextStyle(fontWeight: FontWeight.bold),)),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TextField(controller:branch,readOnly: true),
+                                  TextField(controller:productName,readOnly: true),
+                                  TextField(controller:stock),
+                                ],
+                              ),
+                              actions: [
+                                ElevatedButton(onPressed: (){
+                                  Navigator.of(context).pop();
+                                  setState(() {});
+                                  }, child: Text("Cancel")),
+                                ElevatedButton(onPressed: (){
+                                  //api call
+                                }, child: Text("Update"))
                               ],
-                            ),
-                          );
-                        });
-                        // if(direction==DismissDirection.endToStart){
-                        //
-                        // }
-                        // else{
-                        //   //update
-                        // }
+                            );
+                          });
                       },
                       child: ListTile(
                         leading: Text("Branch"),

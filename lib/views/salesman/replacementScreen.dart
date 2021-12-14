@@ -13,6 +13,7 @@ class ReplacementScreen extends StatefulWidget {
 class _ReplacementScreenState extends State<ReplacementScreen> {
 
   int quantity=0;
+  var barcode;
   String _scanBarcode = 'Unknown';
   Future<void> scanBarcodeNormal() async {
     String barcodeScanRes;
@@ -20,7 +21,7 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Cancel', true, ScanMode.BARCODE);
-      print(barcodeScanRes);
+      barcode=await barcodeScanRes;
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
     }
@@ -106,6 +107,7 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                   Text("Scan BarCode",style: TextStyle(fontSize: 25),),
                   IconButton(icon:Icon(CupertinoIcons.barcode,size: 50,),onPressed: (){
                     scanBarcodeNormal();
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(barcode.toString()),));
                   },),
                   Padding(
                     padding: const EdgeInsets.all(50.0),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fyp_ims/views/admin/adminHomePage.dart';
 import 'package:fyp_ims/views/manager/managerHomePage.dart';
 import 'package:fyp_ims/views/salesman/salesmanHomePage.dart';
 
@@ -24,10 +23,10 @@ class InterfacesDemo extends StatelessWidget {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (ctx) => ManagerHomePage()));
             }, child: Text("To Manager")),
-            ElevatedButton(onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (ctx) => AdminHomePage()));
-            }, child: Text("To Admin")),
+            // ElevatedButton(onPressed: () {
+            //   Navigator.of(context).push(
+            //       MaterialPageRoute(builder: (ctx) => AdminHomePage()));
+            // }, child: Text("To Admin")),
           ],
         ),
       ),
