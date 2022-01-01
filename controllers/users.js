@@ -40,12 +40,12 @@ exports.signUp = (req, res, next) => {
                         email: req.body.email,
                         password: hash,
                         guard: req.body.guard,
-                        target: req.body.target || null,
-                        salary: req.body.salary || null,
-                        phone: req.body.phone || null,
-                        visa: req.body.visa || null,
-                        address: req.body.address || null,
-                        shift: req.body.shift || null,
+                        target: req.body.target,
+                        salary: req.body.salary,
+                        phone: req.body.phone,
+                        visa: req.body.visa,
+                        address: req.body.address,
+                        shift: req.body.shift,
                     })
                     user.save().then(response => {
                         res.status(201).json(response)
