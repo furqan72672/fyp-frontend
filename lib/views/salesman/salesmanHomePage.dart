@@ -1,26 +1,35 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp_ims/components/dialog.dart';
+import 'package:fyp_ims/models/user.dart';
 import 'package:fyp_ims/views/salesman/demandScreen.dart';
 import 'package:fyp_ims/views/salesman/homeScreen.dart';
 import 'package:fyp_ims/views/salesman/replacementScreen.dart';
 import 'package:fyp_ims/views/salesman/salesScreen.dart';
 
 class SalesmanHomePage extends StatefulWidget {
-  const SalesmanHomePage({Key? key}) : super(key: key);
+  User user;
+  SalesmanHomePage({Key? key,required this.user}) : super(key: key,);
 
   @override
   _SalesmanHomePageState createState() => _SalesmanHomePageState();
 }
 
 class _SalesmanHomePageState extends State<SalesmanHomePage> {
-
+  // var user;
   int cIndex=0;
-  final screens=[
-    HomeScreen(),
+  late var screens=[
+    HomeScreen(user: widget.user),
     SalesScreen(),
     DemandScreen(),
     ReplacementScreen(),
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
 
   @override
@@ -85,8 +94,13 @@ class _SalesmanHomePageState extends State<SalesmanHomePage> {
         ),
       ),
       appBar: AppBar(
-        title: Text("SalesMan Interface"),
+        title: Text("Welcome to Sales Alibi"),
         centerTitle: true,
+        actions: [
+          TextButton(onPressed: (){
+            CustomDialog().showConfirmation(text: "Are you sure you want to logout?",context: context,cancelText: "No",confirmText: "Yes");
+          }, child: Text("Logout",style: TextStyle(color: Colors.white),),)
+        ],
       ),
       body: screens[cIndex]
     );

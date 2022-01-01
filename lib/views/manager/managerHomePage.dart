@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp_ims/models/user.dart';
 import 'package:fyp_ims/views/manager/attendanceScreen.dart';
 import 'package:fyp_ims/views/manager/requestsScreen.dart';
 import 'package:fyp_ims/views/manager/salesScreen.dart';
 import 'package:fyp_ims/views/manager/stockScreen.dart';
 
 class ManagerHomePage extends StatefulWidget {
-  const ManagerHomePage({Key? key}) : super(key: key);
+  User user;
+  ManagerHomePage({Key? key,required this.user}) : super(key: key);
 
   @override
   _ManagerHomePageState createState() => _ManagerHomePageState();
@@ -26,7 +28,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Manager Interface"),
+        title: Text("Welcome to Sales Alibi"),
         centerTitle: true,
       ),
       bottomNavigationBar: Container(

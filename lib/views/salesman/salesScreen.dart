@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:fyp_ims/services/productService.dart';
 
 class SalesScreen extends StatefulWidget {
   const SalesScreen({Key? key}) : super(key: key);
@@ -14,7 +17,6 @@ class _SalesScreenState extends State<SalesScreen> {
 
   int quantity=0;
   var barcode;
-  String _scanBarcode = 'Unknown';
   Future<void> scanBarcodeNormal() async {
     String barcodeScanRes;
     // Platform messages may fail, so we use a try/catch PlatformException.
@@ -31,10 +33,11 @@ class _SalesScreenState extends State<SalesScreen> {
     // setState to update our non-existent appearance.
     if (!mounted) return;
 
-    setState(() {
-      _scanBarcode = barcodeScanRes;
-      print(_scanBarcode);
-    });
+    var res=await ProductService().getBarcode(barcode);
+    print(res);
+    var decoded=jsonDecode(res!.body);
+    print(decoded);
+    setState(() {});
   }
 
   @override
@@ -114,7 +117,7 @@ class _SalesScreenState extends State<SalesScreen> {
                     child: Container(
                       height: 50.0,
                         width: double.infinity,
-                        child: ElevatedButton(onPressed: (){}, child: Text("Update Sales",style: TextStyle(fontWeight: FontWeight.bold),))),
+                        child: ElevatedButton(onPressed: (){}, child: Text("Post Sales",style: TextStyle(fontWeight: FontWeight.bold),))),
                   ),
                 ],
               ),

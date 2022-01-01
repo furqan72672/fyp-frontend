@@ -46,7 +46,7 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text("Generate A Request For Replacement",
+              Text("Generate A Replacement Request",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 25.0,

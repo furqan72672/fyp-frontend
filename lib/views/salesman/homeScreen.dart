@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:fyp_ims/models/user.dart';
 import 'package:fyp_ims/utils/geoFunctions.dart';
 import 'package:fyp_ims/utils/timeFormatter.dart';
 import 'package:geocoding/geocoding.dart';
@@ -7,7 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  User user;
+  HomeScreen({Key? key,required this.user}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -21,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   TimeOfDay time = TimeOfDay.now();
   Timer? timer;
   Position? pos;
+  late User user=widget.user;
 
   void startTimer() {
     timer = Timer.periodic(Duration(seconds: 1), (_) {
@@ -77,8 +80,8 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.all(20.0),
               child: Center(
                 //handle this
-                child: Text("Hi Dummy", style: TextStyle(
-                    fontSize: 20,
+                child: Text("Hi "+this.user.name.toString()[0].toUpperCase()+this.user.name.toString().substring(1), style: TextStyle(
+                    fontSize: 25,
                     fontWeight: FontWeight.bold
                 ),),
               ),
@@ -109,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Container(
-                          width: 100.0, height: 100.0,
+                          width: 120.0, height: 50.0,
                           decoration: BoxDecoration(
                             color: Colors.indigoAccent,
                             borderRadius: BorderRadius.circular(20.0),
@@ -117,14 +120,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Center(child: Padding(
                             padding: const EdgeInsets.all(5.0),
                             //handle this
-                            child: Text("Your incentive earned is Dummy Data",
+                            child: Text("Incentive: "+"500",
                               style: TextStyle(
-                                  color: Colors.white
+                                  color: Colors.white,
                               ),),
                           ))),
                       SizedBox(height: 20.0,),
                       Container(
-                          width: 100.0, height: 100.0,
+                          width: 120.0, height: 50.0,
                           decoration: BoxDecoration(
                             color: Colors.indigoAccent,
                             borderRadius: BorderRadius.circular(20.0),
@@ -132,8 +135,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Center(child: Padding(
                             padding: const EdgeInsets.all(5.0),
                             //handle this
-                            child: Text("Pieces left to sell", style: TextStyle(
-                                color: Colors.white
+                            child: Text("Target: "+this.user.target.toString(), style: TextStyle(
+                                color: Colors.white,
                             )),
                           )))
                     ],
@@ -141,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 25.0,),
+            SizedBox(height: 100.0,),
             Center(
               child: Padding(
                 padding: const EdgeInsets.all(50.0),

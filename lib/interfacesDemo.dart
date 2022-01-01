@@ -16,12 +16,12 @@ class InterfacesDemo extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (ctx) => SalesmanHomePage()));
+              // Navigator.of(context).push(
+              //     MaterialPageRoute(builder: (ctx) => SalesmanHomePage()));
             }, child: Text("To Salesman")),
             ElevatedButton(onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (ctx) => ManagerHomePage()));
+              // Navigator.of(context).push(
+              //     MaterialPageRoute(builder: (ctx) => ManagerHomePage()));
             }, child: Text("To Manager")),
             // ElevatedButton(onPressed: () {
             //   Navigator.of(context).push(
