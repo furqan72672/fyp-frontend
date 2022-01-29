@@ -1,7 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:fyp_ims/components/dialog.dart';
+import 'package:fyp_ims/models/product.dart';
+import 'package:fyp_ims/services/productService.dart';
+import 'package:fyp_ims/services/requestService.dart';
 
 class ReplacementScreen extends StatefulWidget {
   const ReplacementScreen({Key? key}) : super(key: key);
@@ -14,7 +20,13 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
 
   int quantity=0;
   var barcode;
-  String _scanBarcode = 'Unknown';
+  Product? product;
+  TextEditingController nameController=new TextEditingController();
+  TextEditingController barcodeController=new TextEditingController();
+  var formkey=GlobalKey<FormState>();
+  AutovalidateMode _autovalidateMode= AutovalidateMode.disabled;
+  bool quantityError=false;
+
   Future<void> scanBarcodeNormal() async {
     String barcodeScanRes;
     // Platform messages may fail, so we use a try/catch PlatformException.
@@ -30,10 +42,13 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
     if (!mounted) return;
-
+    if(int.parse(barcode)==-1||barcode==null) return;
+    var res=await ProductService().getBarcode(barcode);
+    var decoded=jsonDecode(res.body);
+    product=Product.fromJson(decoded);
     setState(() {
-      _scanBarcode = barcodeScanRes;
-      print(_scanBarcode);
+      nameController.text=product!.name;
+      barcodeController.text=product!.barcode;
     });
   }
 
@@ -54,69 +69,106 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                 ),
               ),
               SizedBox(height: 100.0,),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  TextField(
-                    decoration: InputDecoration(
-                        label: Text("Product Name"),
-                        border: OutlineInputBorder(),
-                        suffixIcon: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(icon:Icon(Icons.search),onPressed: (){},),
-                          ],
-                        )
+              Form(
+                key: formkey,
+                autovalidateMode: _autovalidateMode,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    TextFormField(
+                      controller: nameController,
+                      decoration: InputDecoration(
+                          label: Text("Product Name"),
+                          border: OutlineInputBorder(),
+                          suffixIcon: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(icon:Icon(Icons.search),onPressed: (){},),
+                            ],
+                          )
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 25.0,),
-                  TextField(
-                    decoration: InputDecoration(
-                        label: Text("Product Code"),
-                        border: OutlineInputBorder(),
-                        suffixIcon: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(icon:Icon(Icons.add_to_photos_rounded),onPressed: (){},),
-                          ],
-                        )
-                    ),
-                  ),
-                  SizedBox(height: 25.0,),
-                  Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text("Quantity",style: TextStyle(fontSize: 20.0)),
-                      Spacer(),
-                      IconButton(onPressed: (){
-                        if(quantity>0){
-                          --quantity;
+                    SizedBox(height: 25.0,),
+                    TextFormField(
+                      controller: barcodeController,
+                      decoration: InputDecoration(
+                          label: Text("Product Code"),
+                          border: OutlineInputBorder(),
+                          suffixIcon: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(icon:Icon(Icons.add_to_photos_rounded),onPressed: (){},),
+                            ],
+                          )
+                      ),
+                      validator: (val){
+                        if(val=='') {
+                          return "Barcode can not be empty";
                         }
-                        setState(() {});
-                      }, icon: Icon(Icons.remove,size:30.0)),
-                      Container(width:40.0,height: 40.0,decoration:BoxDecoration(color: Colors.grey.shade100),child: Center(child: Text(quantity.toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0),))),
-                      IconButton(onPressed: (){
-                        ++quantity;
-                        setState(() {});
-                      }, icon: Icon(Icons.add,size: 30.0,)),
-                    ],
-                  ),
-                  SizedBox(height: 50.0,),
-                  Text("OR",),
-                  Text("Scan BarCode",style: TextStyle(fontSize: 25),),
-                  IconButton(icon:Icon(CupertinoIcons.barcode,size: 50,),onPressed: (){
-                    scanBarcodeNormal();
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(barcode.toString()),));
-                  },),
-                  Padding(
-                    padding: const EdgeInsets.all(50.0),
-                    child: Container(
-                        height: 50.0,
-                        width: double.infinity,
-                        child: ElevatedButton(onPressed: (){}, child: Text("Request Replacement",style: TextStyle(fontWeight: FontWeight.bold),))),
-                  ),
-                ],
+                      },
+                    ),
+                    SizedBox(height: 25.0,),
+                    Row(
+                      // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text("Quantity",style: TextStyle(fontSize: 20.0)),
+                        Spacer(),
+                        IconButton(onPressed: (){
+                          if(quantity>0){
+                            --quantity;
+                          }
+                          setState(() {});
+                        }, icon: Icon(Icons.remove,size:30.0)),
+                        Container(width:40.0,height: 40.0,decoration:BoxDecoration(color: Colors.grey.shade100),child: Center(child: Text(quantity.toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0),))),
+                        IconButton(onPressed: (){
+                          ++quantity;
+                          setState(() {});
+                        }, icon: Icon(Icons.add,size: 30.0,)),
+                      ],
+                    ),
+                    quantityError?Row(
+                      children: [
+                        Text("Quantity can not be 0", style: TextStyle(color: Colors.red),),
+                      ],
+                    ):SizedBox(),
+                    SizedBox(height: 50.0,),
+                    Text("OR",),
+                    Text("Scan BarCode",style: TextStyle(fontSize: 25),),
+                    IconButton(icon:Icon(CupertinoIcons.barcode,size: 50,),onPressed: ()async{
+                      await scanBarcodeNormal();
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(barcode.toString()),));
+                    },),
+                    Padding(
+                      padding: const EdgeInsets.all(50.0),
+                      child: Container(
+                          height: 50.0,
+                          width: double.infinity,
+                          child: ElevatedButton(onPressed: ()async{
+                            if(!formkey.currentState!.validate()){
+                              _autovalidateMode=AutovalidateMode.always;
+                              setState(() {});
+                            }
+                            if(quantity==0){
+                              quantityError=true;
+                              setState(() {});
+                              return;
+                            }
+                            quantityError=false;
+                            setState(() {});
+                            CustomDialog().show(text: "Requesting Replacement...",context: context);
+                            var res=await RequestService().addRequest(product: barcodeController.text,quantity: quantity,type: 1);
+                            var decoded=jsonDecode(res!.body);
+                            CustomDialog().notShow(context);
+                            if(decoded['_id']==null) {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(decoded['Error'])));
+                              return;
+                            }
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Replacement Requested")));
+                          }, child: Text("Request Replacement",style: TextStyle(fontWeight: FontWeight.bold),))),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

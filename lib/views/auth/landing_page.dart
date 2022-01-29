@@ -47,6 +47,7 @@ class _LandingPageState extends State<LandingPage> {
         }
       }
       else{
+        prefs.clear();
         CustomDialog().notShow(context);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please log in again!"),duration: Duration(seconds: 2),));
       }
