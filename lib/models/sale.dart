@@ -1,4 +1,3 @@
-import 'package:fyp_ims/models/branch.dart';
 import 'package:fyp_ims/models/user.dart';
 import 'package:json_annotation/json_annotation.dart';
 

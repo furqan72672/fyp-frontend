@@ -54,17 +54,22 @@ class _SalesScreenState extends State<SalesScreen> {
                       itemCount: localData.length,
                       separatorBuilder: (context,index)=>Divider(height: 15.0,thickness: 2.0,),
                       itemBuilder: (context,index){
-                        return ListTile(
-                          isThreeLine: true,
-                          leading: Text(localData[index].user.branch![0].store_name),
-                          title: Center(child: Text(localData[0].user.name)),
-                          subtitle: Column(
-                          children: [
-                            Center(child: Text("Target: 50")),
-                            Center(child: Text("Incentive: 50")),
-                          ],
-                        ),
-                          trailing: Text(localData[0].sold.toString()),
+                        return Dismissible(
+                          onDismissed: (direction){},
+                          key: UniqueKey(),
+                          direction: DismissDirection.none,
+                          child: ListTile(
+                            isThreeLine: true,
+                            leading: Text(localData[index].user.branch![0].store_name),
+                            title: Center(child: Text(localData[0].user.name)),
+                            subtitle: Column(
+                            children: [
+                              Center(child: Text("Target: 50")),
+                              Center(child: Text("Incentive: 50")),
+                            ],
+                          ),
+                            trailing: Text("Sales: "+localData[0].sold.toString()),
+                          ),
                         );
                       }),
                 ),
@@ -72,23 +77,6 @@ class _SalesScreenState extends State<SalesScreen> {
             ],
           ),
         ):Center(child: CircularProgressIndicator())
-        // Padding(
-        //   padding: const EdgeInsets.all(20.0),
-        //   child: Column(
-        //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-        //     children: [
-        //       Text("Sales Report",style: TextStyle(
-        //           fontWeight: FontWeight.bold,
-        //           fontSize: 25.0
-        //       ),),
-        //       // SizedBox(height: 50,),
-        //       Table(
-        //         border: TableBorder.all(),
-        //         children: data,
-        //       ),
-        //     ],
-        //   ),
-        // )
     );
   }
 }

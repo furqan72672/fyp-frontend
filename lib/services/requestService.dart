@@ -26,4 +26,32 @@ class RequestService{
       throw("SocketException");
     }
   }
+
+  getAll() async{
+    SharedPreferences prefs=await SharedPreferences.getInstance();
+    Map<String,String> authHeader={'content-type': 'application/json; charset=UTF-8','authorization':'bearer '+(prefs.getString('token') as String)};
+    try{
+      return await http.get(
+          Uri.parse(baseUrl),
+          headers: authHeader,
+      );
+    }
+    on SocketException{
+      throw("SocketException");
+    }
+  }
+
+  delete(id)async{
+    SharedPreferences prefs=await SharedPreferences.getInstance();
+    Map<String,String> authHeader={'content-type': 'application/json; charset=UTF-8','authorization':'bearer '+(prefs.getString('token') as String)};
+    try{
+      return await http.delete(
+        Uri.parse(baseUrl+'/'+id),
+        headers: authHeader,
+      );
+    }
+    on SocketException{
+      throw("SocketException");
+    }
+  }
 }
