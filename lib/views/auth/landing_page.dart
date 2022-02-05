@@ -59,7 +59,7 @@ class _LandingPageState extends State<LandingPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    emailController.text="user@gmail.com";
+    emailController.text="manager@gmail.com";
     passwordController.text="123456789";
     checkLoggedIn();
   }
@@ -156,7 +156,7 @@ class _LandingPageState extends State<LandingPage> {
                       return;
                     }
                     if(token!=null){
-                      setState(() {});
+                      // setState(() {});
                       print(token);
                       prefs.setString('token', token);
                       var res=await UserService().getProfile(token);

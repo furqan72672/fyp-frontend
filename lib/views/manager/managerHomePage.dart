@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp_ims/components/dialog.dart';
 import 'package:fyp_ims/models/user.dart';
 import 'package:fyp_ims/views/manager/attendanceScreen.dart';
 import 'package:fyp_ims/views/manager/requestsScreen.dart';
@@ -30,6 +31,11 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
       appBar: AppBar(
         title: Text("Welcome to Sales Alibi"),
         centerTitle: true,
+        actions: [
+          TextButton(onPressed: (){
+            CustomDialog().showConfirmation(text: "Are you sure you want to logout?",context: context,cancelText: "No",confirmText: "Yes");
+          }, child: Text("Logout",style: TextStyle(color: Colors.white),),)
+        ],
       ),
       bottomNavigationBar: Container(
         height: 100.0,

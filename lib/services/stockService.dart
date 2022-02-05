@@ -3,27 +3,10 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SaleService{
+class StockService{
 
-  String baseUrl="https://radiant-everglades-71272.herokuapp.com/sales";
+  String baseUrl="https://radiant-everglades-71272.herokuapp.com/stocks";
   // Map<String,String> header= {'content-type': 'application/json; charset=UTF-8'};
-  addSale({product, quantity})async{
-    SharedPreferences prefs=await SharedPreferences.getInstance();
-    Map<String,String> authHeader={'content-type': 'application/json; charset=UTF-8','authorization':'bearer '+(prefs.getString('token') as String)};
-    try{
-      return await http.post(
-          Uri.parse(baseUrl),
-          headers: authHeader,
-          body: jsonEncode({
-            "product": product,
-            "quantity":quantity
-          })
-      );
-    }
-    on SocketException{
-      throw("SocketException");
-    }
-  }
 
   getAll()async{
     SharedPreferences prefs=await SharedPreferences.getInstance();
@@ -32,6 +15,23 @@ class SaleService{
       return await http.get(
         Uri.parse(baseUrl),
         headers: authHeader,
+      );
+    }
+    on SocketException{
+      throw("SocketException");
+    }
+  }
+
+  update(id,quantity)async{
+    SharedPreferences prefs=await SharedPreferences.getInstance();
+    Map<String,String> authHeader={'content-type': 'application/json; charset=UTF-8','authorization':'bearer '+(prefs.getString('token') as String)};
+    Map<String,dynamic> upd={'quantity': quantity};
+
+    try{
+      return await http.patch(
+        Uri.parse(baseUrl+'/'+id),
+        headers: authHeader,
+        body: jsonEncode(upd)
       );
     }
     on SocketException{

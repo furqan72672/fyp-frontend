@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fyp_ims/components/dialog.dart';
+import 'package:fyp_ims/models/sale.dart';
+import 'package:fyp_ims/services/saleService.dart';
 
 class SalesScreen extends StatefulWidget {
   const SalesScreen({Key? key}) : super(key: key);
@@ -9,68 +14,64 @@ class SalesScreen extends StatefulWidget {
 
 class _SalesScreenState extends State<SalesScreen> {
 
-  // List<TableRow> data=[];
-  // createRows(){
-  //   data.add(TableRow(
-  //       decoration: BoxDecoration(color: Colors.grey.shade200),
-  //       children: [
-  //         Center(child: Text("Salesman")),
-  //         Center(child: Text("Branch")),
-  //         Center(child: Text("Sales")),
-  //         Center(child: Text("Target")),
-  //         Center(child: Text("incentive")),
-  //       ]
-  //   ));
-  //   for(var i=1;i<=10;i++){
-  //     data.add(TableRow(
-  //         children: [
-  //           Center(child: Text("1")),
-  //           Center(child: Text("1")),
-  //           Center(child: Text("1")),
-  //           Center(child: Text("1")),
-  //           Center(child: Text("1")),
-  //         ]
-  //     ));
-  //   }
-  // }
+  List<Sale> localData=[];
+  var refreshKey=GlobalKey<RefreshIndicatorState>();
+
+  Future<void> loadData()async{
+    refreshKey.currentState?.show();
+    localData=[];
+    var res=await SaleService().getAll();
+    var decoded=jsonDecode(res!.body);
+    decoded.forEach((sale)async{
+      localData.add(Sale.fromJson(sale));
+    });
+    if(mounted){
+      setState(() {});
+    }
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
-    // createRows();
+    loadData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Material(
-        child: Padding(
+        child: localData.length!=0?Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
               Text("Sales Report",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
               SizedBox(height: 50.0,),
               Expanded(
-                child: ListView.separated(
-                    itemCount: 15,
-                    separatorBuilder: (context,index)=>Divider(height: 15.0,thickness: 2.0,),
-                    itemBuilder: (context,index){
-                      return ListTile(
-                        isThreeLine: true,
-                        leading: Text("Branch"),
-                        title: Center(child: Text("Salesman Name")),
-                        subtitle: Column(
-                        children: [
-                          Center(child: Text("Target: 50")),
-                          Center(child: Text("Incentive: 50")),
-                        ],
-                      ),
-                        trailing: Text("Sales: 10"),
-                      );
-                    }),
+                child: RefreshIndicator(
+                  key: refreshKey,
+                  color: Colors.indigo,
+                  onRefresh: loadData,
+                  child: ListView.separated(
+                      itemCount: localData.length,
+                      separatorBuilder: (context,index)=>Divider(height: 15.0,thickness: 2.0,),
+                      itemBuilder: (context,index){
+                        return ListTile(
+                          isThreeLine: true,
+                          leading: Text(localData[index].user.branch![0].store_name),
+                          title: Center(child: Text(localData[0].user.name)),
+                          subtitle: Column(
+                          children: [
+                            Center(child: Text("Target: 50")),
+                            Center(child: Text("Incentive: 50")),
+                          ],
+                        ),
+                          trailing: Text(localData[0].sold.toString()),
+                        );
+                      }),
+                ),
               ),
             ],
           ),
-        )
+        ):Center(child: CircularProgressIndicator())
         // Padding(
         //   padding: const EdgeInsets.all(20.0),
         //   child: Column(
