@@ -19,11 +19,12 @@ class ConfirmationDialog extends StatelessWidget {
             Navigator.of(context).pop();
           }, child: Text(this.cancelText)),
           ElevatedButton(onPressed: ()async{
-            CustomDialog().notShow(context);
-            CustomDialog().show(text: "Logging Out...",context: context);
+            // CustomDialog().notShow(context);
+            // CustomDialog().show(text: "Logging Out...",context: context);
             SharedPreferences prefs=await SharedPreferences.getInstance();
             prefs.clear();
-            await Future.delayed(Duration(seconds: 2));
+            // CustomDialog().notShow(context);
+            Navigator.pop(context);
             Navigator.of(originalContext).pushReplacement(MaterialPageRoute(builder: (ctx)=>LandingPage()));
           }, child: Text(this.confirmText)),
         ],

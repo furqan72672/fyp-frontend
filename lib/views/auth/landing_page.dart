@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fyp_ims/models/user.dart';
+import 'package:fyp_ims/services/attendanceService.dart';
 import 'package:fyp_ims/views/admin/adminHomePage.dart';
 import 'package:fyp_ims/views/auth/forgottenPasswordEmail.dart';
 import 'package:fyp_ims/interfacesDemo.dart';
@@ -37,11 +38,23 @@ class _LandingPageState extends State<LandingPage> {
       var decoded=jsonDecode(res!.body);
       if(decoded['_id']!=null){
         User user= User.fromJson(decoded);
+        var attendanceInfo=false;
         if(user.guard==0){
+          var res=await AttendanceService().getToday();
+          var decoded=jsonDecode(res!.body);
+          if(decoded.length>0){
+            decoded.forEach((doc){
+              if(doc['user']==user.id){
+                attendanceInfo=true;
+              }
+            });
+          }
+          CustomDialog().notShow(context);
           Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (ctx) => SalesmanHomePage(user: user,)));
+              builder: (ctx) => SalesmanHomePage(user: user,attendanceInfo: attendanceInfo,)));
         }
         else if(user.guard==1){
+          Navigator.pop(context);
           Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (ctx) => ManagerHomePage(user: user,)));
         }
@@ -57,9 +70,8 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    emailController.text="manager@gmail.com";
+    emailController.text="user@gmail.com";
     passwordController.text="123456789";
     checkLoggedIn();
   }
@@ -161,12 +173,23 @@ class _LandingPageState extends State<LandingPage> {
                       prefs.setString('token', token);
                       var res=await UserService().getProfile(token);
                       if(res.body!=null){
+                        var attendanceInfo=false;
                         var decoded=jsonDecode(res!.body);
                         User user= User.fromJson(decoded);
-                        CustomDialog().notShow(context);
                         if(user.guard==0){
+                          var res=await AttendanceService().getToday();
+                          var decoded=jsonDecode(res!.body);
+                          if(decoded.length>0){
+                            decoded.forEach((doc){
+                              if(doc['user']==user.id){
+                                attendanceInfo=true;
+                              }
+                            });
+                          }
+                          CustomDialog().notShow(context);
+                          // Navigator.pop(context);
                           Navigator.of(context).pushReplacement(MaterialPageRoute(
-                              builder: (ctx) => SalesmanHomePage(user: user,)));
+                              builder: (ctx) => SalesmanHomePage(user: user,attendanceInfo: attendanceInfo,)));
                         }
                         else if(user.guard==1){
                           Navigator.of(context).pushReplacement(MaterialPageRoute(

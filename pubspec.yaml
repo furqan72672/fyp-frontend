@@ -36,7 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   intl: ^0.17.0
   geolocator: ^7.7.1
-  geocoding: ^2.0.1
+  geocoding: ^2.0.2
   flutter_barcode_scanner: ^2.0.0
   http: ^0.13.4
   shared_preferences: ^2.0.11

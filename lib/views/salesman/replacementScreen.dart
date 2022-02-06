@@ -148,6 +148,7 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                             if(!formkey.currentState!.validate()){
                               _autovalidateMode=AutovalidateMode.always;
                               setState(() {});
+                              return;
                             }
                             if(quantity==0){
                               quantityError=true;
@@ -160,8 +161,13 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                             var res=await RequestService().addRequest(product: barcodeController.text,quantity: quantity,type: 1);
                             var decoded=jsonDecode(res!.body);
                             CustomDialog().notShow(context);
+                            barcodeController.text="";
+                            nameController.text="";
+                            quantity=0;
+                            _autovalidateMode=AutovalidateMode.disabled;
+                            setState(() {});
                             if(decoded['_id']==null) {
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(decoded['Error'])));
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(decoded['error'])));
                               return;
                             }
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Replacement Requested")));

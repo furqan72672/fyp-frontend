@@ -9,7 +9,8 @@ import 'package:fyp_ims/views/salesman/salesScreen.dart';
 
 class SalesmanHomePage extends StatefulWidget {
   User user;
-  SalesmanHomePage({Key? key,required this.user}) : super(key: key,);
+  bool attendanceInfo;
+  SalesmanHomePage({Key? key,required this.user,required this.attendanceInfo}) : super(key: key,);
 
   @override
   _SalesmanHomePageState createState() => _SalesmanHomePageState();
@@ -17,9 +18,10 @@ class SalesmanHomePage extends StatefulWidget {
 
 class _SalesmanHomePageState extends State<SalesmanHomePage> {
   // var user;
+
   int cIndex=0;
   late var screens=[
-    HomeScreen(user: widget.user),
+    HomeScreen(user: widget.user,attendanceInfo: widget.attendanceInfo,),
     SalesScreen(),
     DemandScreen(),
     ReplacementScreen(),
@@ -30,7 +32,6 @@ class _SalesmanHomePageState extends State<SalesmanHomePage> {
     // TODO: implement initState
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context){

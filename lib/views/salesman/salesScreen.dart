@@ -156,7 +156,6 @@ class _SalesScreenState extends State<SalesScreen> {
                     Text("Scan BarCode",style: TextStyle(fontSize: 25),),
                     IconButton(icon:Icon(CupertinoIcons.barcode,size: 50,),onPressed: ()async{
                       await scanBarcodeNormal();
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(barcode.toString()),));
                     },),
                     Padding(
                       padding: const EdgeInsets.all(50.0),
@@ -167,6 +166,7 @@ class _SalesScreenState extends State<SalesScreen> {
                             if(!formkey.currentState!.validate()){
                               _autovalidateMode=AutovalidateMode.always;
                               setState(() {});
+                              return;
                             }
                             if(quantity==0){
                               quantityError=true;
@@ -179,9 +179,13 @@ class _SalesScreenState extends State<SalesScreen> {
                             var res=await SaleService().addSale(product: barcodeController.text,quantity: quantity);
                             var decoded=jsonDecode(res!.body);
                             CustomDialog().notShow(context);
-
+                            barcodeController.text="";
+                            nameController.text="";
+                            quantity=0;
+                            _autovalidateMode=AutovalidateMode.disabled;
+                            setState(() {});
                             if(decoded['_id']==null) {
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(decoded['Error'])));
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(decoded['error'])));
                               return;
                             }
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Sale added")));
