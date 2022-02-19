@@ -162,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: resolved?Padding(
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -256,18 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           ],
         ),
-      ):Center(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              CircularProgressIndicator(),
-              SizedBox(height: 30,),
-              Text("Loading attendance information",style: TextStyle(fontSize: 18),)
-            ],
-          ),
-      ),
+      )
     );
   }
 
